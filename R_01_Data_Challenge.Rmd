@@ -85,9 +85,9 @@ rm(all_data)
 # lets look at some properties of the data
 cat(
   "Number of features: ", ncol(train_val_x),
-  "\nNumber of training observations: ", nrow(train_val_x),
-  "\nNumber of test observations: ", nrow(test_x_all),
-  "\n\nFeature short names (daily average or cumulative daily for rainfall):\n
+  "Number of training observations: ", nrow(train_val_x),
+  "Number of test observations: ", nrow(test_x_all),
+  "\nFeature short names (daily average or cumulative daily for rainfall):\n
 - evap_: Evaporation at various stations
 - rain_: Rainfall at various stations
 - temp_: Temperature at various stations (including max/min daily)
@@ -98,9 +98,9 @@ cat(
 - windspeed_: Wind speed at various stations
 - winddir_: Wind direction at various stations
 - ", y_var, ": The name of the soil moisture gauge to predict
-- _lag1: Variable lagged by 1 day (lag2 = 2 days etc.)\n\n",
-"Feature names:\n",
-  sep = ""
+- _lag1: Variable lagged by 1 day (lag2 = 2 days etc.)\n",
+  "Feature names:\n",
+  sep = "\n"
 )
 
 colnames(test_x_all)
@@ -188,39 +188,39 @@ the target variable and selecting the most useful features.
 best_n <- 5
 
 if (!is.null(best_n)) {
-    ## YOUR CODE HERE
-    # you can use your own code here to find the optimal features (say a RF)
+  ## YOUR CODE HERE
+  # you can use your own code here to find the optimal features (say a RF)
 
-    # example with simpler correlation approach
-    #
-    # select the top n features, drop the observed variable
-    if (val_split == TRUE) {
-      corr_mtrx <- head(
-        abs(psych::corr.test(x = bind_cols(train_x_all, train_y))$r), -1
-      )
-    } else {
-      corr_mtrx <- head(
-        abs(psych::corr.test(x = bind_cols(train_x_all, train_val_y))$r), -1
-      )
-    }
-
-    # print the best n predictors
+  # example with simpler correlation approach
+  #
+  # select the top n features, drop the observed variable
+  if (val_split == TRUE) {
     corr_mtrx <- head(
-      corr_mtrx[order(corr_mtrx[, ncol(corr_mtrx)], decreasing = TRUE), ],
-      best_n
+      abs(psych::corr.test(x = bind_cols(train_x_all, train_y))$r), -1
     )
-    for (i in 1:nrow(corr_mtrx)) {
-      cat(
-        corr_mtrx[i, ncol(corr_mtrx)], "  ", row.names(corr_mtrx)[i], "\n",
-        sep = ""
-      )
-    }
-    top_n_features <- row.names(corr_mtrx)
-    ## END CODE
+  } else {
+    corr_mtrx <- head(
+      abs(psych::corr.test(x = bind_cols(train_x_all, train_val_y))$r), -1
+    )
+  }
+
+  # print the best n predictors
+  corr_mtrx <- head(
+    corr_mtrx[order(corr_mtrx[, ncol(corr_mtrx)], decreasing = TRUE), ],
+    best_n
+  )
+  for (i in 1:nrow(corr_mtrx)) {
+    cat(
+      corr_mtrx[i, ncol(corr_mtrx)], "  ", row.names(corr_mtrx)[i], "\n",
+      sep = ""
+    )
+  }
+  top_n_features <- row.names(corr_mtrx)
+  ## END CODE
 
 } else {
-    # use all features
-    top_n_features <- colnames(train_x_all)
+  # use all features
+  top_n_features <- colnames(train_x_all)
 }
 
 # Now
@@ -247,7 +247,7 @@ use_scaler <- TRUE
 
 if (use_scaler) {
   # standardise the data for better performance
-  
+
   # Base scaling on train_x.
   train_x <- scale(train_x)
   test_x <- scale(
@@ -263,14 +263,14 @@ if (use_scaler) {
 
   # Base scaling on train_y.
   scaler_y_range <- range(train_y)
-  train_y[,1] <- DescTools::StripAttr(
+  train_y[, 1] <- DescTools::StripAttr(
     datawizard::rescale(train_y, to = c(0, 1))
   )
-  test_y[,1] <- DescTools::StripAttr(
+  test_y[, 1] <- DescTools::StripAttr(
     datawizard::rescale(test_y[,], to = c(0, 1), range = scaler_y_range)
   )
   if (val_split) {
-    val_y[,1] <- DescTools::StripAttr(
+    val_y[, 1] <- DescTools::StripAttr(
       datawizard::rescale(val_y, to = c(0, 1), range = scaler_y_range)
     )
   }

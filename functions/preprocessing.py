@@ -1,4 +1,6 @@
-import os, glob
+import base64
+import glob
+import os
 import pandas as pd
 import numpy as np
 
@@ -172,7 +174,7 @@ def daily_averaging(daily_data,type='daily',buffer=8):
         daily_data.index = daily_data.index.round(freq='1T',ambiguous='NaT')
         # Rainfall resets at 9 AM local (9 AM even during DST) and is reported as the rainfall on the 
         # day of 9am finish so we need to shift by 24-9 hours to make the end time midnight
-        # and incldue a little buffer less than the sample time Environode tends to 
+        # and include a little buffer less than the sample time Environode tends to 
         # count e.g., 09:00:02 as inclusive in the previous day's rainfall
         daily_data.index = daily_data.index.shift(24-9,freq='H').shift(-buffer,freq='T')
         # now we can simply take the daily max having shifted our local 9 AM to midnight
@@ -187,8 +189,6 @@ def daily_averaging(daily_data,type='daily',buffer=8):
 
 ################################################################################
 ################################################################################
-
-import base64
 
 def cheeky_check(str_in):
     if not type(str_in) is str:
