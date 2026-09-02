@@ -1,0 +1,293 @@
+
+---
+# Keep YAML above the first chunk.
+title: "<span style='font-size: 34px'>DARE Deluxe Data Challenge I</span>"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+
+library(dplyr)          # For data manipulation.
+library(ggplot2)        # For plots.
+library(knitr)          # To set chunk options.
+
+# Global knitr options.
+opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
+```
+
+DARE 2023
+
+In this R Markdown file, we will provide a template for the DARE Deluxe Data Challenge. The main steps covered here will be:
+
+- Load the data
+- Provide an overview of what is in the data
+- Provide an example of a terribly performing baseline model
+- Provide functions to quantify model predictive performance
+
+### Imports and settings
+Everything we need to get started.
+
+```{r chunk_import}
+
+# Get the path to this Rmd file.
+script_path_current <- here::here()
+
+# Load supporting functions...
+#
+# Data.
+source(Gmisc::pathJoin(script_path_current, "functions_R", "R_data_functions.R"), local = knitr::knit_global())
+# Helper.
+source(Gmisc::pathJoin(script_path_current, "functions_R", "R_helper_functions.R"), local = knitr::knit_global())
+# Plotting.
+source(Gmisc::pathJoin(script_path_current, "functions_R", "R_plotting_functions.R"), local = knitr::knit_global())
+# Preprocessing.
+source(Gmisc::pathJoin(script_path_current, "functions_R", "R_preprocessing.R"), local = knitr::knit_global())
+
+```
+
+### Load the data
+
+```{r chunk_load}
+
+all_data <- load_daily_data()
+#
+train_val_x <- all_data$train_x
+train_val_y <- all_data$train_y
+test_x_all <- all_data$test_x
+test_y <- all_data$test_y
+
+y_var <- "v2_WE.16.03.B3"   # Gauge name to predict
+train_val_y <- select(train_val_y, all_of(y_var))
+test_y <- select(test_y, all_of(y_var))
+
+head(train_val_x)
+rm(all_data)
+
+```
+
+```{r chunk_properties}
+
+# lets look at some properties of the data
+cat("Number of features: ", ncol(train_val_x),
+  "\nNumber of training observations: ", nrow(train_val_x),
+  "\nNumber of test observations: ", nrow(test_x_all),
+
+  "\n\nFeature short names (daily average or cumulative daily for rainfall):\n
+- evap_: Evaporation at various stations
+- rain_: Rainfall at various stations
+- temp_: Temperature at various stations (including max/min daily)
+- relhumidity_: Relative humidity at various stations
+- solarrad_: Solar radiation at various stations
+- mlsp_: Mean sea level pressure at various stations
+- uv_: UV index at various stations
+- windspeed_: Wind speed at various stations
+- winddir_: Wind direction at various stations
+- ", y_var, ": The name of the soil moisture gauge to predict
+- _lag1: Variable lagged by 1 day (lag2 = 2 days etc.)\n\n",
+"Feature names:\n",
+  sep = "")
+
+colnames(test_x_all)
+
+cat("\nPredict variable: ", paste0('"', colnames(train_val_y), '"  '),
+  sep = "")
+
+```
+
+
+### Split our training data into training and validation sets
+
+We can either split this randomly if we are just modelling as a plain regression problem (set `shuffle = True`), or we can split it sequentially if we are modelling as a time series problem (set `shuffle = False`).
+
+```{r chunk_split}
+
+# randomly or sequentially split the data into training and validation sets
+val_split <- TRUE # there is no benefit to using a validation in our simple linear model
+shuffle <- FALSE
+
+if (val_split == TRUE) {
+
+  # Ensure the number of outcome rows matches the number of predictor rows.
+  outcome_predictor_count_match <- (nrow(train_val_x) == nrow(train_val_y))
+  if (!outcome_predictor_count_match) {
+    cat("\nWarning: mismatched number of outcome and predictor rows in training set.\n", sep = "")
+  }
+  stopifnot(outcome_predictor_count_match)
+  rm(outcome_predictor_count_match)
+
+  val_proportion <- 0.2   # Keep val_proportion in the range 0 to 1.
+  val_absolute <- round(val_proportion * nrow(train_val_x))
+  split1 <- c(rep(0, nrow(train_val_x) - val_absolute),
+              rep(1, val_absolute))
+  if (shuffle == TRUE) {
+    split1 <- sample(split1)
+  }
+
+  train_x_all <- train_val_x[split1 == 0, ]
+  val_x_all <- train_val_x[split1 == 1, ]
+
+  # Version a) Converts single column dataframes to vectors.
+  # train_y <- train_val_y[split1 == 0, ]
+  # val_y <- train_val_y[split1 == 1, ]
+  #
+  # Version b) Retains dataframe structure.
+  train_y <- filter(train_val_y, row_number() %in% seq(1, {nrow(train_val_x) - val_absolute}))
+  val_y <- filter(train_val_y, row_number() %in% seq({1 + nrow(train_val_x) - val_absolute}, nrow(train_val_x)))
+
+} else {
+  train_x_all <- train_val_x
+  train_y <- train_val_y
+  val_x_all <- NULL
+  val_y <- NULL
+}
+
+# create placeholders for our model predictions
+train_y_pred <- NULL
+val_y_pred <- NULL
+test_y_pred <- NULL
+
+```
+
+### Select predictors
+
+We will use the very simplistic approach of just assessing the correlation to the target variable and selecting the most useful features.
+
+```{r chunk_predictors}
+
+best_n <- 5 # select the top n features - use NULL for all features
+           # N.B. "top_n" is a dpylr function.
+
+if (!is.null(best_n)) {
+    ## YOUR CODE HERE
+    # you can use your own code here to find the optimal features (say a RF)
+
+    # example with simpler correlation approach
+    #
+    # select the top n features, drop the observed variable
+    if (val_split == TRUE) {
+      corr_mtrx <- head(abs(psych::corr.test(x = bind_cols(train_x_all, train_y))$r), -1)
+    } else {
+      corr_mtrx <- head(abs(psych::corr.test(x = bind_cols(train_x_all, train_val_y))$r), -1)
+    }
+
+    # print the best n predictors
+    corr_mtrx <- head(corr_mtrx[order(corr_mtrx[, ncol(corr_mtrx)], decreasing = TRUE), ], best_n)
+    for (i in 1:nrow(corr_mtrx)) {cat(corr_mtrx[i, ncol(corr_mtrx)], "  ", row.names(corr_mtrx)[i], "\n", sep = "")}
+    top_n_features <- row.names(corr_mtrx)
+    ## END CODE
+
+} else {
+    # use all features
+    top_n_features <- colnames(train_x_all)
+}
+
+# Now
+train_x <- train_x_all[top_n_features]
+train_time <- as.POSIXct(row.names(train_x_all), format = "%Y-%m-%d")
+test_x <- test_x_all[top_n_features]
+test_time <- as.POSIXct(row.names(test_x_all), format = "%Y-%m-%d")
+if (val_split) {
+  val_x <- val_x_all[top_n_features]
+  val_time <- as.POSIXct(row.names(val_x_all), format = "%Y-%m-%d")
+
+} else {
+  val_x <- NULL
+  val_time <- NULL
+}
+
+```
+
+### Scale the data if needed
+
+```{r chunk_scale}
+
+use_scaler <- TRUE
+
+if (use_scaler) {
+  # standardise the data for better performance
+  
+  # Base scaling on train_x.
+  train_x <- scale(train_x)
+  test_x <- scale(test_x, center = attr(train_x, "scaled:center"), scale = attr(train_x, "scaled:scale"))
+  if (val_split) {
+    val_x <- scale(val_x, center = attr(train_x, "scaled:center"), scale = attr(train_x, "scaled:scale"))
+  }
+
+  # Base scaling on train_y.
+  scaler_y_range <- range(train_y)
+  train_y[,1] <- DescTools::StripAttr(datawizard::rescale(train_y, to = c(0, 1)))
+  test_y[,1] <- DescTools::StripAttr(datawizard::rescale(test_y[,], to = c(0, 1), range = scaler_y_range))
+  if (val_split) {
+    val_y[,1] <- DescTools::StripAttr(datawizard::rescale(val_y, to = c(0, 1), range = scaler_y_range))
+  }
+
+} else {
+  scaler_x <- NULL
+  scaler_y <- NULL
+}
+
+```
+
+### Train a model
+We will use a simple linear regression model as a baseline. You can implement your own model here.
+
+```{r chunk_train}
+
+## YOUR CODE HERE
+
+## fit a linear model to the data
+model <- lm(formula = as.formula(paste0(y_var, " ~ .")), data = cbind(train_x, train_y))
+
+## fit a neural network to the data
+#library(nnet)   # For neural network functions.
+#model <- fdm2id::MLPREG(train_x, train_y)
+
+## predict on data
+train_y_pred <- data.frame(tmp = predict(model, newdata = as.data.frame(train_x)))
+names(train_y_pred) <- y_var
+#
+test_y_pred <- data.frame(tmp = predict(model, newdata = as.data.frame(test_x)))
+names(test_y_pred) <- y_var
+#
+if (!is.null(val_x)) {
+  val_y_pred <- data.frame(tmp = predict(model, newdata = as.data.frame(val_x)))
+  names(val_y_pred) <- y_var
+}
+
+## END CODE
+```
+
+### Assess model performance
+
+```{r chunk_assess}
+
+# construct a list of data structures for plotting and metrics
+data_list <- list(
+  "train_time" = train_time,
+  "train_y" = train_y,
+  "train_y_pred" = train_y_pred,
+  "test_time" = test_time,
+  "test_y" = test_y,
+  "test_y_pred" = test_y_pred,
+  "val_time" = val_time,
+  "val_y" = val_y,
+  "val_y_pred" = val_y_pred
+)
+predicted_data <- inversescaler_predictor(data_list, scaler_y_range)
+
+```
+
+```{r chunk_plot}
+
+## plot the model performance and get metrics
+test_pwd <- NULL
+metrics <- assess_model_prediction(predicted_data, test = test_pwd)
+cat("Model performance metrics:\n\n")
+metrics
+
+```
+
+\
