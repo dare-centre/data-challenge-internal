@@ -43,7 +43,8 @@ def load_environode(data_dir, filestub, utc_to_aest=True):
 ################################################################################
 ################################################################################
 
-def convert_environode_daily(data_in,type='9am',buffer=8):
+
+def convert_environode_daily(data_in, type="9am", buffer=8):
     """
     Convert data from Environode to daily - this makes clear the format
     of the Environode data (and rounding errors etc that the data has) and
@@ -71,11 +72,11 @@ def convert_environode_daily(data_in,type='9am',buffer=8):
         dev_daily.index = dev_daily.index.tz_localize(None)
         dev_daily = dev_daily.reindex(
             pd.date_range(
-                data_in["Date"].min().strftime('%Y-%m-%d'),
-                data_in["Date"].max().strftime('%Y-%m-%d'),
+                data_in["Date"].min().strftime("%Y-%m-%d"),
+                data_in["Date"].max().strftime("%Y-%m-%d"),
                 freq="D",
             ),
-            fill_value=np.nan
+            fill_value=np.nan,
         )
         dev_daily.index.name = "Date"
         dev_daily.reset_index(inplace=True)
@@ -99,10 +100,10 @@ col_convert_df = {
     " Rain Since 9am (mm)": "rain",
     " Temperature (C)": "temp",
     " Rel Humidity (%)": "relhumidity",
-    " Solar Rad (kWh/m^2)": "solarrad"
+    " Solar Rad (kWh/m^2)": "solarrad",
 }
 
-def load_llara_gauges(data_dir,gauge_names,col_convert=col_convert_df):
+def load_llara_gauges(data_dir, gauge_names, col_convert=col_convert_df):
     """
     Load data from the LLARA gauges
     Input:
@@ -118,9 +119,9 @@ def load_llara_gauges(data_dir,gauge_names,col_convert=col_convert_df):
             os.path.join(data_dir, "llara", this_gauge),
             skiprows=3,
             index_col=0,
-            parse_dates=True, 
+            parse_dates=True,
             na_values=" ?",
-            usecols = list(col_convert.keys()),
+            usecols=list(col_convert.keys()),
         )
         llara_data_tmp.rename(columns=col_convert, inplace=True)
         # average rainfall over the day
@@ -135,7 +136,8 @@ def load_llara_gauges(data_dir,gauge_names,col_convert=col_convert_df):
 
         llara_data_tmp.rename(
             columns={_: "{}_{}".format(_, short_name) for _ in col_convert.values()},
-            inplace=True),
+            inplace=True
+        ),
         
         llara_data.append(llara_data_tmp)
     llara_data = pd.concat(llara_data, axis=1)
@@ -151,6 +153,7 @@ col_convert_silodf = {
     "T.Min": "tempmin",
     "Evap": "evap",
 }
+
 
 def load_silo_gauges(data_dir, gauge_names, col_convert=col_convert_silodf):
     # We will also load the silo data for the same period
@@ -190,8 +193,8 @@ def daily_averaging(daily_data, type="daily", buffer=8):
         last observation at 9am remains in the correct day (important for a
         cumulative variable like rainfall)
     """
-    if '9am' in type:
-        daily_data.index = daily_data.index.round(freq='1T',ambiguous='NaT')
+    if "9am" in type:
+        daily_data.index = daily_data.index.round(freq="1T", ambiguous="NaT")
         # Rainfall resets at 9 AM local (9 AM even during DST) and is reported as the rainfall on the 
         # day of 9am finish so we need to shift by 24-9 hours to make the end time midnight
         # and include a little buffer less than the sample time Environode tends to
@@ -206,7 +209,7 @@ def daily_averaging(daily_data, type="daily", buffer=8):
             daily_data = daily_data.resample("D").max()
     elif type == "daily":
         daily_data = daily_data.resample("D").mean()
-    
+
     return daily_data
 
 ################################################################################
@@ -219,6 +222,7 @@ def cheeky_check(str_in):
         return True
     else:
         return False
+
 
 ################################################################################
 ################################################################################

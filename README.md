@@ -4,6 +4,7 @@ This repository contains the data and example code for the DARE Deluxe Data
 Challenge I.
 
 ## Data
+
 Data were prepared using the Jupyter notebook `00_Data_Preprocessing.ipynb`. We
 will be using the files:
 
@@ -17,7 +18,7 @@ will be using the files:
 You should use either...
 
 - Python Jupyter notebook `01_Data_Challenge.ipynb`
-or
+  or
 - R Markdown file `R_01_Data_Challenge.Rmd`
 
 to complete the challenge.

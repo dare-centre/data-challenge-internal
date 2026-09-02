@@ -6,14 +6,14 @@ import matplotlib.dates as mdates
 ###############################################################################
 ###############################################################################
 
-def plot_model_fit(x, y_obs, y_mod, mod_metrics=None,**kwargs):
+def plot_model_fit(x, y_obs, y_mod, mod_metrics=None, **kwargs):
     # Sort values for plotting by x axis
     sns.set(font_scale=1.2)
     sns.set_style("whitegrid")
 
     # Plot
     fig, axes = plt.subplots(
-        nrows=1, ncols=2, figsize=(14, 5), gridspec_kw={'width_ratios': [2,3]}
+        nrows=1, ncols=2, figsize=(14, 5), gridspec_kw={'width_ratios': [2, 3]}
     )
     ax = axes[0]
     ax.scatter(y_obs, y_mod, s=10)
@@ -28,14 +28,14 @@ def plot_model_fit(x, y_obs, y_mod, mod_metrics=None,**kwargs):
     if mod_metrics is not None:
         ax.text(
             0.95,
-            0.05, 
+            0.05,
             "R2 = {:.2f}\nRMSE = {:.2f}\nBSS = {:.2f}".format(
                 mod_metrics["r2"], mod_metrics["rmse"], mod_metrics["bss"]
             ),
             horizontalalignment="right",
             verticalalignment="bottom",
             bbox=dict(edgecolor="black", facecolor="white"),
-            transform=ax.transAxes
+            transform=ax.transAxes,
         )
 
     # set axis limits to be the same

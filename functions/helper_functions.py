@@ -17,7 +17,7 @@ def calculate_model_performance(y_obs, y_mod, **kwargs):
     """
     # Calculate the metrics
     bss = 1 - (
-        np.sum((y_obs[1:] - y_mod[1:])**2) / np.sum((y_obs[1:]-y_obs[:-1])**2)
+        np.sum((y_obs[1:] - y_mod[1:]) ** 2) / np.sum((y_obs[1:]-y_obs[:-1]) ** 2)
     )
     r2 = r2_score(y_obs, y_mod)
     rmse = np.sqrt(mean_squared_error(y_obs, y_mod))
@@ -78,7 +78,7 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
             pred_dict["val_y"],
             pred_dict["val_y_pred"],
             mod_metrics=val_metrics,
-            title="Model fit for validation data"
+            title="Model fit for validation data",
         )
     else:
         val_metrics = None
@@ -96,7 +96,7 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
         )
     else:
         test_metrics = None
-    
+
     # construct pandas dataframe
     metrics = pd.DataFrame(
         {"Train": train_metrics, "Validation": val_metrics, "Test": test_metrics}
@@ -115,16 +115,16 @@ def inversescaler_pred_dict(predicted_data, scaler=None):
     if scaler is not None:
         predicted_data["train_y"] = scaler.inverse_transform(predicted_data["train_y"])
         predicted_data["train_y_pred"] = scaler.inverse_transform(
-            predicted_data["train_y_pred"].reshape(-1,1)
+            predicted_data["train_y_pred"].reshape(-1, 1)
         )
         predicted_data["test_y"] = scaler.inverse_transform(predicted_data["test_y"])
         predicted_data["test_y_pred"] = scaler.inverse_transform(
-            predicted_data["test_y_pred"].reshape(-1,1)
+            predicted_data["test_y_pred"].reshape(-1, 1)
         )
         if predicted_data["val_y"] is not None:
             predicted_data["val_y"] = scaler.inverse_transform(predicted_data["val_y"])
             predicted_data["val_y_pred"] = scaler.inverse_transform(
-                predicted_data["val_y_pred"].reshape(-1,1)
+                predicted_data["val_y_pred"].reshape(-1, 1)
             )
 
     return predicted_data
