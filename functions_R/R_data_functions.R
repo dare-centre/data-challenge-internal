@@ -4,24 +4,24 @@
 
 # Legacy function, currently disabled.
 
-#load_raw_data <- function() {
-#
-#  # Define a NULL variable reference to provide more graceful error
-#  # handling in the event of failed data import.
-#  raw_data <- NULL
-#
-#  # N.B. Assumes a header row is present.
-#  raw_data <- readr::read_csv(
-#    file = Gmisc::pathJoin(
-#      funr::get_script_path(), "data", "raw_data",
-#      "MiningProcess_Flotation_Plant_Database.csv"
-#    ),
-#    locale = readr::locale(decimal_mark = ","),
-#    show_col_types = FALSE
-#  )
-#
-#  return(raw_data)
-#}
+#`load_raw_data <- function() {
+#`
+#`  # Define a NULL variable reference to provide more graceful error
+#`  # handling in the event of failed data import.
+#`  raw_data <- NULL
+#`
+#`  # N.B. Assumes a header row is present.
+#`  raw_data <- readr::read_csv(
+#`    file = Gmisc::pathJoin(
+#`      funr::get_script_path(), "data", "raw_data",
+#`      "MiningProcess_Flotation_Plant_Database.csv"
+#`    ),
+#`    locale = readr::locale(decimal_mark = ","),
+#`    show_col_types = FALSE
+#`  )
+#`
+#`  return(raw_data)
+#`}
 
 ###############################################################################
 ###############################################################################
@@ -41,7 +41,7 @@ csv_to_dataframe <- function(file_name) {
     ))
   )
 
-  return(df)
+  df
 }
 
 ###############################################################################
@@ -75,8 +75,10 @@ load_daily_data <- function() {
   colnames(test_x) <- make.names(colnames(test_x), unique = TRUE)
   colnames(test_y) <- make.names(colnames(test_y), unique = TRUE)
 
-  return(list("train_x" = train_x, "train_y" = train_y,
-              "test_x" = test_x, "test_y" = test_y))
+  list(
+    "train_x" = train_x, "train_y" = train_y,
+    "test_x" = test_x, "test_y" = test_y
+  )
 }
 
 ###############################################################################

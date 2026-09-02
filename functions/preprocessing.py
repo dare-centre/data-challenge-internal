@@ -191,7 +191,7 @@ def daily_averaging(daily_data,type='daily',buffer=8):
 ################################################################################
 
 def cheeky_check(str_in):
-    if not type(str_in) is str:
+    if type(str_in) is not str:
         return False
     if base64.b64encode(str_in.encode("utf-8")) == b'b3BlbnNlc2FtZQ==':
         return True

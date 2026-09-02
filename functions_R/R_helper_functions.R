@@ -27,7 +27,9 @@ calculate_model_performance <- function(y_obs, y_mod) {
 
   # Calculate the metrics
 
-  bss <- 1 - {sum((y_obs[-1, ] - y_mod[-1, ])^2) / sum((y_obs[-1, ] - head(y_obs, -1))^2)}
+  bss <- 1 - (
+    sum((y_obs[-1, ] - y_mod[-1, ])^2) / sum((y_obs[-1, ] - head(y_obs, -1))^2)
+  )
 
   y_obs <- as.vector(y_obs[,1])
   y_mod <- as.vector(y_mod[,1])
@@ -74,7 +76,7 @@ assess_model_prediction <- function(predictor, test = NULL) {
       predictor$train_y, predictor$train_y_pred
     )
     plot_model_fit(
-      predictor$train_time, predictor$train_y[,1], predictor$train_y_pred[,1],
+      predictor$train_time, predictor$train_y[, 1], predictor$train_y_pred[, 1],
       mod_metrics = train_metrics,
       title = "Model fit for training data"
     )
@@ -86,7 +88,7 @@ assess_model_prediction <- function(predictor, test = NULL) {
       predictor$val_y, predictor$val_y_pred
     )
     plot_model_fit(
-      predictor$val_time, predictor$val_y[,1], predictor$val_y_pred[,1],
+      predictor$val_time, predictor$val_y[, 1], predictor$val_y_pred[, 1],
       mod_metrics = val_metrics,
       title = "Model fit for validation data"
     )
@@ -99,7 +101,7 @@ assess_model_prediction <- function(predictor, test = NULL) {
       predictor$test_y, predictor$test_y_pred
     )
     plot_model_fit(
-      predictor$test_time, predictor$test_y[,1], predictor$test_y_pred[,1],
+      predictor$test_time, predictor$test_y[, 1], predictor$test_y_pred[, 1],
       mod_metrics = test_metrics,
       title = "Model fit for test data"
     )
@@ -124,14 +126,26 @@ inversescaler_predictor <- function(predictor, scaler) {
 
   # Inverse scale selected predictor dataframe columns.
 
-  predictor$train_y[,1] <- DescTools::StripAttr(datawizard::rescale(predictor$train_y, to = scaler))
-  predictor$train_y_pred[,1] <- DescTools::StripAttr(datawizard::rescale(predictor$train_y_pred, to = scaler))
-  predictor$test_y[,1] <- DescTools::StripAttr(datawizard::rescale(predictor$test_y, to = scaler))
-  predictor$test_y_pred[,1] <- DescTools::StripAttr(datawizard::rescale(predictor$test_y_pred, to = scaler))
+  predictor$train_y[, 1] <- DescTools::StripAttr(
+    datawizard::rescale(predictor$train_y, to = scaler)
+  )
+  predictor$train_y_pred[, 1] <- DescTools::StripAttr(
+    datawizard::rescale(predictor$train_y_pred, to = scaler)
+  )
+  predictor$test_y[, 1] <- DescTools::StripAttr(
+    datawizard::rescale(predictor$test_y, to = scaler)
+  )
+  predictor$test_y_pred[, 1] <- DescTools::StripAttr(
+    datawizard::rescale(predictor$test_y_pred, to = scaler)
+  )
 
   if (exists("val_y", predictor)) {
-    predictor$val_y[,1] <- DescTools::StripAttr(datawizard::rescale(predictor$val_y, to = scaler))
-    predictor$val_y_pred[,1] <- DescTools::StripAttr(datawizard::rescale(predictor$val_y_pred, to = scaler))
+    predictor$val_y[, 1] <- DescTools::StripAttr(
+      datawizard::rescale(predictor$val_y, to = scaler)
+    )
+    predictor$val_y_pred[, 1] <- DescTools::StripAttr(
+      datawizard::rescale(predictor$val_y_pred, to = scaler)
+    )
   }
 
   return(predictor)

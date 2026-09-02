@@ -4,14 +4,14 @@
 
 cheeky_check <- function(str_in) {
 
-  if (!(is.character(str_in) & length(str_in) == 1)) {
+  if (!(is.character(str_in) && length(str_in) == 1)) {
     return(FALSE)
   }
 
   if (RCurl::base64(str_in) == "b3BlbnNlc2FtZQ==") {
-    return(TRUE)
+    TRUE
   } else {
-    return(FALSE)
+    FALSE
   }
 }
 

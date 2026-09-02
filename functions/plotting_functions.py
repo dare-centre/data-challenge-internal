@@ -23,7 +23,7 @@ def plot_model_fit(x, y_obs, y_mod, mod_metrics=None,**kwargs):
     ax.plot(lims, lims, '--', color='xkcd:bright red', lw=4)
 
     # add text with model performance
-    if not mod_metrics is None:
+    if mod_metrics is not None:
         ax.text(
             0.95, 0.05, 
             'R2 = {:.2f}\nRMSE = {:.2f}\nBSS = {:.2f}'.format(mod_metrics['r2'], mod_metrics['rmse'], mod_metrics['bss']),

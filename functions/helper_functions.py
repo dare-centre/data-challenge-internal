@@ -58,7 +58,7 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
     pred_dict = {k: v.values if isinstance(v, pd.DataFrame) or isinstance(v, pd.Series) else v for k, v in pred_dict_in.items()}
 
     # Calculate the metrics
-    if not pred_dict['train_y'] is None:
+    if pred_dict['train_y'] is not None:
         train_metrics = calculate_model_performance(
             pred_dict['train_y'], pred_dict['train_y_pred']
         )
@@ -68,7 +68,7 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
         )
     else:
         train_metrics = None
-    if not pred_dict['val_y'] is None:
+    if pred_dict['val_y'] is not None:
         val_metrics = calculate_model_performance(
             pred_dict['val_y'], pred_dict['val_y_pred']
         )
@@ -79,7 +79,7 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
     else:
         val_metrics = None
     test_bool = cheeky_check(test)
-    if not pred_dict['test_y'] is None and test_bool:
+    if pred_dict['test_y'] is not None and test_bool:
         test_metrics = calculate_model_performance(
             pred_dict['test_y'], pred_dict['test_y_pred']
         )
@@ -109,12 +109,12 @@ def inversescaler_pred_dict(predicted_data, scaler=None):
     '''
     Construct a dictionary with the model predictions and inverse transform if needed.
     '''
-    if not scaler is None:
+    if scaler is not None:
         predicted_data['train_y'] = scaler.inverse_transform(predicted_data['train_y'])
         predicted_data['train_y_pred'] = scaler.inverse_transform(predicted_data['train_y_pred'].reshape(-1,1))
         predicted_data['test_y'] = scaler.inverse_transform(predicted_data['test_y'])
         predicted_data['test_y_pred'] = scaler.inverse_transform(predicted_data['test_y_pred'].reshape(-1,1))
-        if not predicted_data['val_y'] is None:
+        if predicted_data['val_y'] is not None:
             predicted_data['val_y'] = scaler.inverse_transform(predicted_data['val_y'])
             predicted_data['val_y_pred'] = scaler.inverse_transform(predicted_data['val_y_pred'].reshape(-1,1))
 
