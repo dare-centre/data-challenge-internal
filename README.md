@@ -28,7 +28,7 @@ Those files have code for...
 - Scaling data.
 - Splitting data into train/validation/test partitions.
 - Example model training via simple linear regression and a neural network.
-- Evaluating and plotting model performance. 
+- Evaluating and plotting model performance.
 
 Your task: develop a better model for prediction.
 

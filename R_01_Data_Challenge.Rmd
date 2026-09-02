@@ -83,10 +83,10 @@ rm(all_data)
 ```{r chunk_properties}
 
 # lets look at some properties of the data
-cat("Number of features: ", ncol(train_val_x),
+cat(
+  "Number of features: ", ncol(train_val_x),
   "\nNumber of training observations: ", nrow(train_val_x),
   "\nNumber of test observations: ", nrow(test_x_all),
-
   "\n\nFeature short names (daily average or cumulative daily for rainfall):\n
 - evap_: Evaporation at various stations
 - rain_: Rainfall at various stations
@@ -100,12 +100,12 @@ cat("Number of features: ", ncol(train_val_x),
 - ", y_var, ": The name of the soil moisture gauge to predict
 - _lag1: Variable lagged by 1 day (lag2 = 2 days etc.)\n\n",
 "Feature names:\n",
-  sep = "")
+  sep = ""
+)
 
 colnames(test_x_all)
 
-cat("\nPredict variable: ", paste0('"', colnames(train_val_y), '"  '),
-  sep = "")
+cat("\nPredict variable: ", paste0('"', colnames(train_val_y), '"  '), sep = "")
 
 ```
 
@@ -149,8 +149,8 @@ if (val_split == TRUE) {
   val_x_all <- train_val_x[split1 == 1, ]
 
   # Version a) Converts single column dataframes to vectors.
-  # train_y <- train_val_y[split1 == 0, ]
-  # val_y <- train_val_y[split1 == 1, ]
+  #` train_y <- train_val_y[split1 == 0, ]
+  #` val_y <- train_val_y[split1 == 1, ]
   #
   # Version b) Retains dataframe structure.
   train_y <- filter(
@@ -183,8 +183,9 @@ the target variable and selecting the most useful features.
 
 ```{r chunk_predictors}
 
-best_n <- 5 # select the top n features - use NULL for all features
-           # N.B. "top_n" is a dpylr function.
+# select the top n features - use NULL for all features
+# N.B. "top_n" is a dpylr function.
+best_n <- 5
 
 if (!is.null(best_n)) {
     ## YOUR CODE HERE

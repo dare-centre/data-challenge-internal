@@ -12,11 +12,11 @@ paginate: True
   }
   h3, h4 {
     text-align: center;
-  } 
+  }
   h4 {
     color: #1f4e6d;
   }
-  img { 
+  img {
     margin: 0 auto;
   }
 </style>
@@ -25,7 +25,7 @@ paginate: True
 
 # Data Description
 
-For this challenge we will be working with Soil Moisture data from Willem's ongoing project. 
+For this challenge we will be working with Soil Moisture data from Willem's ongoing project.
 
 <iframe width="100%" height="600px" src="Soil moisture gauges.html"></iframe>
 
@@ -69,6 +69,6 @@ Where our baseline is the previous day's soil moisture ($SM_{t-1}$).
 
 Extra points also given for flair - e.g., if you can get a model working without the use of the $SM_{t-1}$ in validation/testing (i.e., able to predict beyond the next day).
 
-Travis and Josh will judge the winner. 
+Travis and Josh will judge the winner.
 
 Test is password protected - the password will be given at the end.
