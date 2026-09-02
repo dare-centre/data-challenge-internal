@@ -10,7 +10,7 @@ append_rows <- function(df_input, n) {
     df_input[nrow(df_input) + 1, ] <- NA
   }
 
-  return(df_input)
+  df_input
 
 }
 
@@ -31,8 +31,8 @@ calculate_model_performance <- function(y_obs, y_mod) {
     sum((y_obs[-1, ] - y_mod[-1, ])^2) / sum((y_obs[-1, ] - head(y_obs, -1))^2)
   )
 
-  y_obs <- as.vector(y_obs[,1])
-  y_mod <- as.vector(y_mod[,1])
+  y_obs <- as.vector(y_obs[, 1])
+  y_mod <- as.vector(y_mod[, 1])
 
   r2 <- MLmetrics::R2_Score(y_obs, y_mod)
   rmse <- Metrics::rmse(y_obs, y_mod)
@@ -43,7 +43,7 @@ calculate_model_performance <- function(y_obs, y_mod) {
     "rmse" = rmse,
     "mae" = mae
   )
-  return(metrics_out)
+  metrics_out
 }
 
 ###############################################################################
@@ -96,7 +96,7 @@ assess_model_prediction <- function(predictor, test = NULL) {
     val_metrics <- NULL
   }
   test_bool <- cheeky_check(test)
-  if (exists("test_y", predictor) & test_bool) {
+  if (exists("test_y", predictor) && test_bool) {
     test_metrics <- calculate_model_performance(
       predictor$test_y, predictor$test_y_pred
     )
@@ -116,7 +116,7 @@ assess_model_prediction <- function(predictor, test = NULL) {
     "Test" = test_metrics
   )
 
-  return(metrics)
+  metrics
 }
 
 ###############################################################################
@@ -148,5 +148,5 @@ inversescaler_predictor <- function(predictor, scaler) {
     )
   }
 
-  return(predictor)
+  predictor
 }

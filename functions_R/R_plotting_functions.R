@@ -5,7 +5,7 @@ library(ggplot2)
 ###############################################################################
 
 plot_model_fit <- function(
-    time_input, y_obs, y_mod, mod_metrics = NULL, title = ""
+  time_input, y_obs, y_mod, mod_metrics = NULL, title = ""
 ) {
 
   # Generate model fit plot.
@@ -13,13 +13,13 @@ plot_model_fit <- function(
     data.frame("y_obs" = y_obs, "y_mod" = y_mod),
     aes(x = y_obs, y = y_mod)
   ) +
-  # medium size, filled round point.
-  geom_point(shape = 16, color = "#4c72b0") +
-  geom_abline(slope = 1, color = "red", linetype = "dashed") +
-  ggtitle(title) +
-  xlab("Observed") +
-  ylab("Modelled") +
-  theme_dare()
+    # medium size, filled round point.
+    geom_point(shape = 16, color = "#4c72b0") +
+    geom_abline(slope = 1, color = "red", linetype = "dashed") +
+    ggtitle(title) +
+    xlab("Observed") +
+    ylab("Modelled") +
+    theme_dare()
 
   print(ggplot_pmf)
 
