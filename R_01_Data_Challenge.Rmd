@@ -20,7 +20,8 @@ opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 DARE 2023
 
-In this R Markdown file, we will provide a template for the DARE Deluxe Data Challenge. The main steps covered here will be:
+In this R Markdown file, we will provide a template for the DARE Deluxe Data
+Challenge. The main steps covered here will be:
 
 - Load the data
 - Provide an overview of what is in the data
@@ -38,14 +39,25 @@ script_path_current <- here::here()
 # Load supporting functions...
 #
 # Data.
-source(Gmisc::pathJoin(script_path_current, "functions_R", "R_data_functions.R"), local = knitr::knit_global())
+source(
+  Gmisc::pathJoin(script_path_current, "functions_R", "R_data_functions.R"),
+  local = knitr::knit_global()
+)
 # Helper.
-source(Gmisc::pathJoin(script_path_current, "functions_R", "R_helper_functions.R"), local = knitr::knit_global())
+source(
+  Gmisc::pathJoin(script_path_current, "functions_R", "R_helper_functions.R"),
+  local = knitr::knit_global()
+)
 # Plotting.
-source(Gmisc::pathJoin(script_path_current, "functions_R", "R_plotting_functions.R"), local = knitr::knit_global())
+source(
+  Gmisc::pathJoin(script_path_current, "functions_R", "R_plotting_functions.R"),
+  local = knitr::knit_global()
+)
 # Preprocessing.
-source(Gmisc::pathJoin(script_path_current, "functions_R", "R_preprocessing.R"), local = knitr::knit_global())
-
+source(
+  Gmisc::pathJoin(script_path_current, "functions_R", "R_preprocessing.R"),
+  local = knitr::knit_global()
+)
 ```
 
 ### Load the data
@@ -100,12 +112,15 @@ cat("\nPredict variable: ", paste0('"', colnames(train_val_y), '"  '),
 
 ### Split our training data into training and validation sets
 
-We can either split this randomly if we are just modelling as a plain regression problem (set `shuffle = True`), or we can split it sequentially if we are modelling as a time series problem (set `shuffle = False`).
+We can either split this randomly if we are just modelling as a plain
+regression problem (set `shuffle = True`), or we can split it sequentially if
+we are modelling as a time series problem (set `shuffle = False`).
 
 ```{r chunk_split}
 
 # randomly or sequentially split the data into training and validation sets
-val_split <- TRUE # there is no benefit to using a validation in our simple linear model
+# there is no benefit to using a validation in our simple linear model
+val_split <- TRUE
 shuffle <- FALSE
 
 if (val_split == TRUE) {
@@ -113,7 +128,11 @@ if (val_split == TRUE) {
   # Ensure the number of outcome rows matches the number of predictor rows.
   outcome_predictor_count_match <- (nrow(train_val_x) == nrow(train_val_y))
   if (!outcome_predictor_count_match) {
-    cat("\nWarning: mismatched number of outcome and predictor rows in training set.\n", sep = "")
+    cat(
+      "\nWarning: ",
+      "mismatched number of outcome and predictor rows in training set.\n",
+      sep = ""
+    )
   }
   stopifnot(outcome_predictor_count_match)
   rm(outcome_predictor_count_match)
@@ -134,8 +153,14 @@ if (val_split == TRUE) {
   # val_y <- train_val_y[split1 == 1, ]
   #
   # Version b) Retains dataframe structure.
-  train_y <- filter(train_val_y, row_number() %in% seq(1, {nrow(train_val_x) - val_absolute}))
-  val_y <- filter(train_val_y, row_number() %in% seq({1 + nrow(train_val_x) - val_absolute}, nrow(train_val_x)))
+  train_y <- filter(
+    train_val_y, row_number() %in% seq(1, (nrow(train_val_x) - val_absolute))
+  )
+  val_y <- filter(
+    train_val_y, row_number() %in% seq(
+      (1 + nrow(train_val_x) - val_absolute), nrow(train_val_x)
+    )
+  )
 
 } else {
   train_x_all <- train_val_x
@@ -153,7 +178,8 @@ test_y_pred <- NULL
 
 ### Select predictors
 
-We will use the very simplistic approach of just assessing the correlation to the target variable and selecting the most useful features.
+We will use the very simplistic approach of just assessing the correlation to
+the target variable and selecting the most useful features.
 
 ```{r chunk_predictors}
 
@@ -168,14 +194,26 @@ if (!is.null(best_n)) {
     #
     # select the top n features, drop the observed variable
     if (val_split == TRUE) {
-      corr_mtrx <- head(abs(psych::corr.test(x = bind_cols(train_x_all, train_y))$r), -1)
+      corr_mtrx <- head(
+        abs(psych::corr.test(x = bind_cols(train_x_all, train_y))$r), -1
+      )
     } else {
-      corr_mtrx <- head(abs(psych::corr.test(x = bind_cols(train_x_all, train_val_y))$r), -1)
+      corr_mtrx <- head(
+        abs(psych::corr.test(x = bind_cols(train_x_all, train_val_y))$r), -1
+      )
     }
 
     # print the best n predictors
-    corr_mtrx <- head(corr_mtrx[order(corr_mtrx[, ncol(corr_mtrx)], decreasing = TRUE), ], best_n)
-    for (i in 1:nrow(corr_mtrx)) {cat(corr_mtrx[i, ncol(corr_mtrx)], "  ", row.names(corr_mtrx)[i], "\n", sep = "")}
+    corr_mtrx <- head(
+      corr_mtrx[order(corr_mtrx[, ncol(corr_mtrx)], decreasing = TRUE), ],
+      best_n
+    )
+    for (i in 1:nrow(corr_mtrx)) {
+      cat(
+        corr_mtrx[i, ncol(corr_mtrx)], "  ", row.names(corr_mtrx)[i], "\n",
+        sep = ""
+      )
+    }
     top_n_features <- row.names(corr_mtrx)
     ## END CODE
 
@@ -211,17 +249,29 @@ if (use_scaler) {
   
   # Base scaling on train_x.
   train_x <- scale(train_x)
-  test_x <- scale(test_x, center = attr(train_x, "scaled:center"), scale = attr(train_x, "scaled:scale"))
+  test_x <- scale(
+    test_x, center = attr(train_x, "scaled:center"),
+    scale = attr(train_x, "scaled:scale")
+  )
   if (val_split) {
-    val_x <- scale(val_x, center = attr(train_x, "scaled:center"), scale = attr(train_x, "scaled:scale"))
+    val_x <- scale(
+      val_x, center = attr(train_x, "scaled:center"),
+      scale = attr(train_x, "scaled:scale")
+    )
   }
 
   # Base scaling on train_y.
   scaler_y_range <- range(train_y)
-  train_y[,1] <- DescTools::StripAttr(datawizard::rescale(train_y, to = c(0, 1)))
-  test_y[,1] <- DescTools::StripAttr(datawizard::rescale(test_y[,], to = c(0, 1), range = scaler_y_range))
+  train_y[,1] <- DescTools::StripAttr(
+    datawizard::rescale(train_y, to = c(0, 1))
+  )
+  test_y[,1] <- DescTools::StripAttr(
+    datawizard::rescale(test_y[,], to = c(0, 1), range = scaler_y_range)
+  )
   if (val_split) {
-    val_y[,1] <- DescTools::StripAttr(datawizard::rescale(val_y, to = c(0, 1), range = scaler_y_range))
+    val_y[,1] <- DescTools::StripAttr(
+      datawizard::rescale(val_y, to = c(0, 1), range = scaler_y_range)
+    )
   }
 
 } else {
@@ -232,24 +282,31 @@ if (use_scaler) {
 ```
 
 ### Train a model
-We will use a simple linear regression model as a baseline. You can implement your own model here.
+We will use a simple linear regression model as a baseline.
+You can implement your own model here.
 
 ```{r chunk_train}
 
 ## YOUR CODE HERE
 
 ## fit a linear model to the data
-model <- lm(formula = as.formula(paste0(y_var, " ~ .")), data = cbind(train_x, train_y))
+model <- lm(
+  formula = as.formula(paste0(y_var, " ~ .")), data = cbind(train_x, train_y)
+)
 
 ## fit a neural network to the data
 #library(nnet)   # For neural network functions.
 #model <- fdm2id::MLPREG(train_x, train_y)
 
 ## predict on data
-train_y_pred <- data.frame(tmp = predict(model, newdata = as.data.frame(train_x)))
+train_y_pred <- data.frame(
+  tmp = predict(model, newdata = as.data.frame(train_x))
+)
 names(train_y_pred) <- y_var
 #
-test_y_pred <- data.frame(tmp = predict(model, newdata = as.data.frame(test_x)))
+test_y_pred <- data.frame(
+  tmp = predict(model, newdata = as.data.frame(test_x))
+)
 names(test_y_pred) <- y_var
 #
 if (!is.null(val_x)) {

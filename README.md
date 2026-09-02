@@ -43,3 +43,7 @@ metrics.
 | MAE           | Mean Absolute Error          |
 | MSE           | Mean Squared Error           |
 | R<sup>2</sup> | Coefficient of Determination |
+
+## Acknowledgements
+
+Contributors: Joshua Simmons and Travis Stenborg.
