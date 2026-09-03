@@ -15,9 +15,9 @@ def calculate_model_performance(y_obs, y_mod, **kwargs):
     - RMSE
     - MAE
     """
-    # Calculate the metrics
+    # Calculate the metrics.
     bss = 1 - (
-        np.sum((y_obs[1:] - y_mod[1:]) ** 2) / np.sum((y_obs[1:]-y_obs[:-1]) ** 2)
+        np.sum((y_obs[1:] - y_mod[1:]) ** 2) / np.sum((y_obs[1:] - y_obs[:-1]) ** 2)
     )
     r2 = r2_score(y_obs, y_mod)
     rmse = np.sqrt(mean_squared_error(y_obs, y_mod))
@@ -49,13 +49,13 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
             - MAE
         - plots for train, validation and test performance
     """
-    # deal with residual dataframes
+    # Deal with residual dataframes.
     pred_dict = {
         k: v.values if isinstance(v, pd.DataFrame) or isinstance(v, pd.Series) else v
         for k, v in pred_dict_in.items()
     }
 
-    # Calculate the metrics
+    # Calculate the metrics.
     if pred_dict["train_y"] is not None:
         train_metrics = calculate_model_performance(
             pred_dict["train_y"], pred_dict["train_y_pred"]
@@ -97,7 +97,7 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
     else:
         test_metrics = None
 
-    # construct pandas dataframe
+    # Construct pandas dataframe.
     metrics = pd.DataFrame(
         {"Train": train_metrics, "Validation": val_metrics, "Test": test_metrics}
     )

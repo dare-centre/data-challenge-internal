@@ -27,10 +27,10 @@ def load_environode(data_dir, filestub, utc_to_aest=True):
         data_in = pd.read_csv(this_file)
         data_comb.append(data_in)
 
-    # merge files
+    # Merge files.
     data_comb = pd.concat(data_comb).drop_duplicates()
 
-    # add in date
+    # Add in date.
     data_comb.sort_values(by="timestamp", inplace=True)
     if utc_to_aest:
         data_comb["Date"] = pd.to_datetime(
@@ -55,8 +55,8 @@ def convert_environode_daily(data_in, type="9am", buffer=8):
         - buffer: number of minutes to subtract from each timestamp to ensure the
         last observation at 9am remains in the correct day
     """
-    # load data
-    # lets do a little work here - namely we would like daily means
+    # Load data.
+    # Let's do a little work here - namely we would like daily means.
     daily_data = []
     print(
         "Summarising daily data per device - {} gauges".format(
@@ -66,9 +66,9 @@ def convert_environode_daily(data_in, type="9am", buffer=8):
     for this_device in data_in["device"].unique():
         dev_daily = data_in.query("device == @this_device").copy().set_index("Date")
         dev_daily = daily_averaging(dev_daily, type=type, buffer=buffer)
-        # remove duplicates
+        # Remove duplicates.
         dev_daily = dev_daily.loc[~dev_daily.index.duplicated(keep="first"), :]
-        # ensure we have every day
+        # Ensure we have every day.
         dev_daily.index = dev_daily.index.tz_localize(None)
         dev_daily = dev_daily.reindex(
             pd.date_range(
@@ -80,7 +80,7 @@ def convert_environode_daily(data_in, type="9am", buffer=8):
         )
         dev_daily.index.name = "Date"
         dev_daily.reset_index(inplace=True)
-        # device col is never lost
+        # Device col is never lost.
         print(
             "Gauge: {} start: {} end: {}".format(
                 this_device, dev_daily["Date"].min(), dev_daily["Date"].max()
@@ -88,7 +88,7 @@ def convert_environode_daily(data_in, type="9am", buffer=8):
         )
         dev_daily.loc[:, "device"] = this_device
         daily_data.append(dev_daily)
-    # combine and serve
+    # Combine and serve.
     daily_data = pd.concat(daily_data, axis=0, ignore_index=True)
     return daily_data
 
@@ -114,7 +114,7 @@ def load_llara_gauges(data_dir, gauge_names, col_convert=col_convert_df):
     llara_data = []
     for short_name, this_gauge in gauge_names.items():
         print(this_gauge)
-        # read only specific columns and ensure ? = NaN
+        # Read only specific columns and ensure ? = NaN.
         llara_data_tmp = pd.read_csv(
             os.path.join(data_dir, "llara", this_gauge),
             skiprows=3,
@@ -124,11 +124,11 @@ def load_llara_gauges(data_dir, gauge_names, col_convert=col_convert_df):
             usecols=list(col_convert.keys()),
         )
         llara_data_tmp.rename(columns=col_convert, inplace=True)
-        # average rainfall over the day
+        # Average rainfall over the day.
         llara_data_rain = daily_averaging(
             llara_data_tmp[["rain"]], type="9am", buffer=5
         )
-        # average the others by day - need to discuss this strategy
+        # Average the others by day - need to discuss this strategy.
         llara_data_other = daily_averaging(
             llara_data_tmp.drop(columns=["rain"]), type="9am-mean"
         )
@@ -136,9 +136,9 @@ def load_llara_gauges(data_dir, gauge_names, col_convert=col_convert_df):
 
         llara_data_tmp.rename(
             columns={_: "{}_{}".format(_, short_name) for _ in col_convert.values()},
-            inplace=True
+            inplace=True,
         ),
-        
+    
         llara_data.append(llara_data_tmp)
     llara_data = pd.concat(llara_data, axis=1)
     return llara_data
@@ -156,7 +156,7 @@ col_convert_silodf = {
 
 
 def load_silo_gauges(data_dir, gauge_names, col_convert=col_convert_silodf):
-    # We will also load the silo data for the same period
+    # Also load the silo data for the same period.
     silo_data = []
     for short_name, this_gauge in gauge_names.items():
         silo_tmp = pd.read_csv(
@@ -167,7 +167,7 @@ def load_silo_gauges(data_dir, gauge_names, col_convert=col_convert_silodf):
             delim_whitespace=True,
             usecols=list(col_convert.keys()),
         )
-        # rename to indicate gauge
+        # Rename to indicate gauge.
         silo_tmp.rename(columns=col_convert, inplace=True)
         silo_tmp.rename(
             columns={_: "{}_{}".format(_, short_name) for _ in col_convert.values()},
@@ -195,14 +195,14 @@ def daily_averaging(daily_data, type="daily", buffer=8):
     """
     if "9am" in type:
         daily_data.index = daily_data.index.round(freq="1T", ambiguous="NaT")
-        # Rainfall resets at 9 AM local (9 AM even during DST) and is reported as the rainfall on the 
+        # Rainfall resets at 9 AM local (9 AM even during DST) and is reported as the rainfall on the
         # day of 9am finish so we need to shift by 24-9 hours to make the end time midnight
         # and include a little buffer less than the sample time Environode tends to
-        # count e.g., 09:00:02 as inclusive in the previous day's rainfall
+        # count e.g., 09:00:02 as inclusive in the previous day's rainfall.
         daily_data.index = daily_data.index.shift(24 - 9, freq="H").shift(
             -buffer, freq="T"
         )
-        # now we can simply take the daily max having shifted our local 9 AM to midnight
+        # Now we can simply take the daily max having shifted our local 9 AM to midnight.
         if type == "9am-mean":
             daily_data = daily_data.resample("D").mean()
         else:

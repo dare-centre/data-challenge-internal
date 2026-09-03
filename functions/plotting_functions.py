@@ -6,6 +6,7 @@ import matplotlib.dates as mdates
 ###############################################################################
 ###############################################################################
 
+
 def plot_model_fit(x, y_obs, y_mod, mod_metrics=None, **kwargs):
     # Sort values for plotting by x axis
     sns.set(font_scale=1.2)
@@ -13,7 +14,7 @@ def plot_model_fit(x, y_obs, y_mod, mod_metrics=None, **kwargs):
 
     # Plot
     fig, axes = plt.subplots(
-        nrows=1, ncols=2, figsize=(14, 5), gridspec_kw={'width_ratios': [2, 3]}
+        nrows=1, ncols=2, figsize=(14, 5), gridspec_kw={"width_ratios": [2, 3]}
     )
     ax = axes[0]
     ax.scatter(y_obs, y_mod, s=10)
