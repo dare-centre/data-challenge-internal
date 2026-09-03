@@ -6,9 +6,10 @@ import numpy as np
 
 ################################################################################
 ################################################################################
-##############################   MAIN FUNCTIONS   ##############################
+# MAIN FUNCTIONS   #############################################################
 ################################################################################
 ################################################################################
+
 
 def load_environode(data_dir, filestub, utc_to_aest=True):
     """
@@ -103,6 +104,7 @@ col_convert_df = {
     " Solar Rad (kWh/m^2)": "solarrad",
 }
 
+
 def load_llara_gauges(data_dir, gauge_names, col_convert=col_convert_df):
     """
     Load data from the LLARA gauges
@@ -138,7 +140,7 @@ def load_llara_gauges(data_dir, gauge_names, col_convert=col_convert_df):
             columns={_: "{}_{}".format(_, short_name) for _ in col_convert.values()},
             inplace=True,
         ),
-    
+
         llara_data.append(llara_data_tmp)
     llara_data = pd.concat(llara_data, axis=1)
     return llara_data
@@ -179,9 +181,10 @@ def load_silo_gauges(data_dir, gauge_names, col_convert=col_convert_silodf):
 
 ################################################################################
 ################################################################################
-#############################   HELPER FUNCTIONS   #############################
+# HELPER FUNCTIONS   ###########################################################
 ################################################################################
 ################################################################################
+
 
 def daily_averaging(daily_data, type="daily", buffer=8):
     """
@@ -215,13 +218,14 @@ def daily_averaging(daily_data, type="daily", buffer=8):
 ################################################################################
 ################################################################################
 
+
 def cheeky_check(str_in):
-    if type(str_in) is not str:
+    if isinstance(str_in) is not str:
         return False
     if base64.b64encode(str_in.encode("utf-8")) == b"b3BlbnNlc2FtZQ==":
         return True
-    else:
-        return False
+
+    return False
 
 
 ################################################################################

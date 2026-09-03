@@ -7,6 +7,7 @@ from functions.preprocessing import cheeky_check
 ###############################################################################
 ###############################################################################
 
+
 def calculate_model_performance(y_obs, y_mod, **kwargs):
     """
     Calculate the model performance metrics:
@@ -27,6 +28,7 @@ def calculate_model_performance(y_obs, y_mod, **kwargs):
 
 ###############################################################################
 ###############################################################################
+
 
 def assess_model_prediction(pred_dict_in, test=None, **kwargs):
     """
@@ -107,6 +109,7 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
 
 ###############################################################################
 ###############################################################################
+
 
 def inversescaler_pred_dict(predicted_data, scaler=None):
     """
