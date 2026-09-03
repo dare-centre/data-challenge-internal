@@ -16,6 +16,7 @@ def calculate_model_performance(y_obs, y_mod, **kwargs):
     - RMSE
     - MAE
     """
+
     # Calculate the metrics.
     bss = 1 - (
         np.sum((y_obs[1:] - y_mod[1:]) ** 2) / np.sum((y_obs[1:] - y_obs[:-1]) ** 2)
@@ -25,6 +26,7 @@ def calculate_model_performance(y_obs, y_mod, **kwargs):
     mae = mean_absolute_error(y_obs, y_mod)
     metrics_out = {"bss": bss, "r2": r2, "rmse": rmse, "mae": mae}
     return metrics_out
+
 
 ###############################################################################
 ###############################################################################
@@ -51,6 +53,7 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
             - MAE
         - plots for train, validation and test performance
     """
+
     # Deal with residual dataframes.
     pred_dict = {
         k: v.values if isinstance(v, pd.DataFrame) or isinstance(v, pd.Series) else v
@@ -107,6 +110,7 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
 
     return metrics
 
+
 ###############################################################################
 ###############################################################################
 
@@ -129,8 +133,8 @@ def inversescaler_pred_dict(predicted_data, scaler=None):
             predicted_data["val_y_pred"] = scaler.inverse_transform(
                 predicted_data["val_y_pred"].reshape(-1, 1)
             )
-
     return predicted_data
+
 
 ###############################################################################
 ###############################################################################

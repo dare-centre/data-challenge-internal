@@ -41,6 +41,7 @@ def load_environode(data_dir, filestub, utc_to_aest=True):
         data_comb["Date"] = pd.to_datetime(data_comb["timestamp"], unit="ms")
     return data_comb
 
+
 ################################################################################
 ################################################################################
 
@@ -93,8 +94,10 @@ def convert_environode_daily(data_in, type="9am", buffer=8):
     daily_data = pd.concat(daily_data, axis=0, ignore_index=True)
     return daily_data
 
+
 ################################################################################
 ################################################################################
+
 
 col_convert_df = {
     "Time": "Date",
@@ -145,8 +148,10 @@ def load_llara_gauges(data_dir, gauge_names, col_convert=col_convert_df):
     llara_data = pd.concat(llara_data, axis=1)
     return llara_data
 
+
 ################################################################################
 ################################################################################
+
 
 col_convert_silodf = {
     "Date": "Date",
@@ -178,6 +183,7 @@ def load_silo_gauges(data_dir, gauge_names, col_convert=col_convert_silodf):
         silo_data.append(silo_tmp)
     silo_data = pd.concat(silo_data, axis=1)
     return silo_data
+
 
 ################################################################################
 ################################################################################
@@ -214,6 +220,7 @@ def daily_averaging(daily_data, type="daily", buffer=8):
         daily_data = daily_data.resample("D").mean()
 
     return daily_data
+
 
 ################################################################################
 ################################################################################
