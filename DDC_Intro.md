@@ -33,7 +33,7 @@ For this challenge we will be working with Soil Moisture data from Willem's ongo
 
 # Soil Moisture
 
-<iframe width="600px" height="400px" src="rain_mulgate_WE 16-03 B3_lag_0.html"></iframe>
+<iframe width="600px" height="400px" src="assets/rain_mulgate_WE 16-03 B3_lag_0.html"></iframe>
 
 ---
 
