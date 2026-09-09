@@ -49,9 +49,9 @@ csv_to_dataframe <- function(file_name) {
 
 load_daily_data <- function() {
 
-  # Load the hourly data
+  # Load the daily data.
 
-  # Import data
+  # Import data.
   train_x <- csv_to_dataframe("daily_train_X_data.csv")
   train_y <- csv_to_dataframe("daily_train_y_data.csv")
   test_x <- csv_to_dataframe("daily_test_X_data.csv")

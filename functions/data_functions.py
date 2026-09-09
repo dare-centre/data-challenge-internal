@@ -24,7 +24,7 @@ def load_raw_data():
 
 def load_daily_data():
     """
-    Load the hourly ddata
+    Load the daily data.
     """
     train_x = pd.read_csv(
         os.path.join("data", "daily_train_X_data.csv"), index_col=0, parse_dates=True
