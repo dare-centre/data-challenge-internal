@@ -5,6 +5,12 @@
 This repository contains the data and example code for the DARE Deluxe Data
 Challenge I.
 
+---
+
+<iframe width="75%" src="soil-moisture-gauges.html"></iframe>
+
+---
+
 ## Table of Contents
 
 - [Data](#data)
@@ -88,12 +94,14 @@ be linked to VS Code.
 
 ## Glossary
 
-| Acronym       | Definition                   |
-| :------------ | :--------------------------- |
-| BSS           | Brier Skill Score            |
-| MAE           | Mean Absolute Error          |
-| MSE           | Mean Squared Error           |
-| R<sup>2</sup> | Coefficient of Determination |
+### Model Prediction Performance Metrics
+
+| Acronym                                     | Definition                                                 | Notes                                                                                                                                                                                                                                                              |
+| :------------------------------------------ | :--------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| BSS<br>&nbsp;<br>&nbsp;                     | Brier Skill Score<br>&nbsp;<br>&nbsp;                      | Higher is better. Range: &minus;&infin; to 1.<br>&nbsp;&nbsp;&nbsp;Dimensionless (it has no units).<br>&nbsp;&nbsp;&nbsp;Quantifies how much a probability model outperforms a baseline.                                                                           |
+| MAE<br>&nbsp;<br>&nbsp;                     | Mean Absolute Error<br>&nbsp;<br>&nbsp;                    | Lower is better. Range: 0 to &infin;.<br>&nbsp;&nbsp;&nbsp;Same units as the dependent variable(s).<br>&nbsp;&nbsp;&nbsp;Quantifies the mean size of model errors.                                                                                                 |
+| R<sup>2</sup><br>&nbsp;<br>&nbsp;<br>&nbsp; | Coefficient of Determination<br>&nbsp;<br>&nbsp;<br>&nbsp; | Higher is better. Range: 0 to 1.&ast;<br>&nbsp;&nbsp;&nbsp;Dimensionless (it has no units).<br>&nbsp;&nbsp;&nbsp;Quantifies how well a model explains variance in the dependent variable(s).<br>&nbsp;&nbsp;&nbsp;&ast;Exotic scenarios can yield negative values. |
+| RMSE<br>&nbsp;<br>&nbsp;                    | Root Mean Squared Error<br>&nbsp;<br>&nbsp;                | Lower is better. Range: 0 to &infin;.<br>&nbsp;&nbsp;&nbsp;Same units as the dependent variable(s), unlike vanilla MSE.<br>&nbsp;&nbsp;&nbsp;Like MAE, but heavily penalises large errors.                                                                         |
 
 ## Acknowledgements
 

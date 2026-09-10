@@ -21,19 +21,19 @@ paginate: True
   }
 </style>
 
-<!-- header: <span class="header-col header-text">DARE Deluxe Data Challenge (May. 2023)</span> <span class="header-col header-logo"><img src="https://darecentre.org.au/wp-content/uploads/2020/05/Dare-logo2.png"></span> -->
+<!-- header: <span class="header-col header-text">DARE Deluxe Data Challenge (May. 2023)</span> <span class="header-col header-logo"><img src="assets/dare-logo-2.webp"></span> -->
 
 # Data Description
 
 For this challenge we will be working with Soil Moisture data from Willem's ongoing project.
 
-<iframe width="100%" height="600px" src="Soil moisture gauges.html"></iframe>
+<iframe width="100%" height="600px" src="soil-moisture-gauges.html"></iframe>
 
 ---
 
 # Soil Moisture
 
-<iframe width="600px" height="400px" src="assets/rain_mulgate_WE 16-03 B3_lag_0.html"></iframe>
+<img src="assets/rain-mulgate-WE-16-03-B3-lag-0.png" width="600px">
 
 ---
 
