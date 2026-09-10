@@ -28,7 +28,9 @@ def load_daily_data():
     for target_file in dict_import:
         try:
             # Attempt data import.
-            target_filepath = os.path.join(target_directory, "".join(["daily_", target_file, "_data.csv"]))
+            target_filepath = os.path.join(
+                target_directory, "".join(["daily_", target_file, "_data.csv"])
+            )
             dict_import[target_file] = pd.read_csv(target_filepath, index_col=0, parse_dates=True)
 
         except FileNotFoundError as e:

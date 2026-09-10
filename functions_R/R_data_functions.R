@@ -35,7 +35,7 @@ csv_to_dataframe <- function(file_name) {
 
   }, error = function(e) {
     cat("Error. File: ", file_name, ". Message: ", e$message, sep = "")
-    return(data.frame())
+    data.frame()
   })
 
 }
