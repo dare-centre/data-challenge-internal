@@ -27,7 +27,9 @@ paginate: True
 
 For this challenge we will be working with Soil Moisture data from Willem's ongoing project.
 
-<iframe width="100%" height="600px" src="soil-moisture-gauges.html"></iframe>
+<figure>
+<img src="assets/soil-moisture-gauges.jpeg" width="1768px">
+</figure>
 
 ---
 

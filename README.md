@@ -7,7 +7,9 @@ Challenge I.
 
 ---
 
-<iframe width="75%" src="soil-moisture-gauges.html"></iframe>
+<figure>
+<img src="assets/soil-moisture-gauges.jpeg" width="1768px">
+</figure>
 
 ---
 
