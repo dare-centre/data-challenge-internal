@@ -8,13 +8,13 @@ from functions.preprocessing import cheeky_check
 ###############################################################################
 
 
-def calculate_model_performance(y_obs, y_mod, **kwargs):
+def calculate_model_performance(y_obs, y_mod):
     """
     Calculate the model performance metrics:
-    - BSS
-    - R2
-    - RMSE
-    - MAE
+    - BSS,
+    - R2,
+    - RMSE,
+    - MAE.
     """
 
     # Calculate the metrics.
@@ -32,26 +32,26 @@ def calculate_model_performance(y_obs, y_mod, **kwargs):
 ###############################################################################
 
 
-def assess_model_prediction(pred_dict_in, test=None, **kwargs):
+def assess_model_prediction(pred_dict_in, test=None):
     """
     Plot the model performance for training, validation and test data.
     Return the metrics for model performance.
     Input:
         - pred_dict: A dictionary with:
-            - train_y: observed values for training data
-            - train_y_pred: predicted values for training data
-            - val_y: observed values for validation data
-            - val_y_pred: predicted values for validation data
-            - test_y: observed values for test data
-            - test_y_pred: predicted values for test data
-        - test: None - provide password to get test set results
+            - train_y: observed values for training data.
+            - train_y_pred: predicted values for training data.
+            - val_y: observed values for validation data.
+            - val_y_pred: predicted values for validation data.
+            - test_y: observed values for test data.
+            - test_y_pred: predicted values for test data.
+        - test: None - provide password to get test set results.
     Output:
         - metrics: A pandas dataframe with:
-            - BSS
-            - R2
-            - RMSE
-            - MAE
-        - plots for train, validation and test performance
+            - BSS,
+            - R2,
+            - RMSE,
+            - MAE.
+        - plots for train, validation and test performance.
     """
 
     # Deal with residual dataframes.
@@ -117,7 +117,8 @@ def assess_model_prediction(pred_dict_in, test=None, **kwargs):
 
 def inversescaler_pred_dict(predicted_data, scaler=None):
     """
-    Construct a dictionary with the model predictions and inverse transform if needed.
+    Construct a dictionary with the model predictions and inverse transform if
+    needed.
     """
     if scaler is not None:
         predicted_data["train_y"] = scaler.inverse_transform(predicted_data["train_y"])

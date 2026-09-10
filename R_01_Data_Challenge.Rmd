@@ -33,29 +33,30 @@ Everything we need to get started.
 
 ```{r chunk_import}
 
-# Get the path to this Rmd file.
-script_path_current <- here::here()
+# Build data paths with "here::here" for:
+# a) multiplatform portability,
+# b) starting directory flexibility.
 
 # Load supporting functions...
 #
 # Data.
 source(
-  Gmisc::pathJoin(script_path_current, "functions_R", "R_data_functions.R"),
+  here::here("functions_R", "R_data_functions.R"),
   local = knitr::knit_global()
 )
 # Helper.
 source(
-  Gmisc::pathJoin(script_path_current, "functions_R", "R_helper_functions.R"),
+  here::here("functions_R", "R_helper_functions.R"),
   local = knitr::knit_global()
 )
 # Plotting.
 source(
-  Gmisc::pathJoin(script_path_current, "functions_R", "R_plotting_functions.R"),
+  here::here("functions_R", "R_plotting_functions.R"),
   local = knitr::knit_global()
 )
 # Preprocessing.
 source(
-  Gmisc::pathJoin(script_path_current, "functions_R", "R_preprocessing.R"),
+  here::here("functions_R", "R_preprocessing.R"),
   local = knitr::knit_global()
 )
 ```
@@ -71,7 +72,7 @@ train_val_y <- all_data$train_y
 test_x_all <- all_data$test_x
 test_y <- all_data$test_y
 
-y_var <- "v2_WE.16.03.B3"   # Gauge name to predict
+y_var <- "v2_WE.16.03.B3"   # Name of the gauge to make predictions for.
 train_val_y <- select(train_val_y, all_of(y_var))
 test_y <- select(test_y, all_of(y_var))
 

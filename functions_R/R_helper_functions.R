@@ -20,12 +20,12 @@ append_rows <- function(df_input, n) {
 calculate_model_performance <- function(y_obs, y_mod) {
 
   # Calculate the model performance metrics:
-  #  - BSS
-  #  - R2
-  #  - RMSE
-  #  - MAE
+  #  - BSS.
+  #  - R2.
+  #  - RMSE.
+  #  - MAE.
 
-  # Calculate the metrics
+  # Calculate the metrics.
 
   bss <- 1 - (
     sum((y_obs[-1, ] - y_mod[-1, ])^2) / sum((y_obs[-1, ] - head(y_obs, -1))^2)
@@ -55,22 +55,22 @@ assess_model_prediction <- function(predictor, test = NULL) {
   # Return the metrics for model performance.
   # Input:
   #    - predictor: A dataframe with,
-  #        - train_y       observed values for training data
-  #        - train_y_pred  predicted values for training data
-  #        - val_y         observed values for validation data
-  #        - val_y_pred    predicted values for validation data
-  #        - test_y        observed values for test data
-  #        - test_y_pred   predicted values for test data
-  #   - test: NULL - provide password to get test set results
+  #        - train_y       observed values for training data.
+  #        - train_y_pred  predicted values for training data.
+  #        - val_y         observed values for validation data.
+  #        - val_y_pred    predicted values for validation data.
+  #        - test_y        observed values for test data.
+  #        - test_y_pred   predicted values for test data.
+  #   - test: NULL - provide password to get test set results.
   # Output:
   #    - metrics: A dataframe with,
-  #        - BSS
-  #        - R2
-  #        - RMSE
-  #        - MAE
-  #    - plots for train, validation and test performance
+  #        - BSS,
+  #        - R2,
+  #        - RMSE,
+  #        - MAE.
+  #    - plots for train, validation and test performance.
 
-  # Calculate the metrics
+  # Calculate the metrics.
   if (exists("train_y", predictor)) {
     train_metrics <- calculate_model_performance(
       predictor$train_y, predictor$train_y_pred
@@ -109,7 +109,7 @@ assess_model_prediction <- function(predictor, test = NULL) {
     test_metrics <- NULL
   }
 
-  # construct list
+  # Construct list.
   metrics <- list(
     "Train" = train_metrics,
     "Validation" = val_metrics,

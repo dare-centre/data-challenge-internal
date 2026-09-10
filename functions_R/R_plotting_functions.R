@@ -13,7 +13,7 @@ plot_model_fit <- function(
     data.frame("y_obs" = y_obs, "y_mod" = y_mod),
     aes(x = y_obs, y = y_mod)
   ) +
-    # medium size, filled round point.
+    # Medium size, filled round point.
     geom_point(shape = 16, color = "#4c72b0") +
     geom_abline(slope = 1, color = "red", linetype = "dashed") +
     ggtitle(title) +

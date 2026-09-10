@@ -2,46 +2,42 @@
 ###############################################################################
 ###############################################################################
 
-# Legacy function, currently disabled.
-
-#`load_raw_data <- function() {
-#`
-#`  # Define a NULL variable reference to provide more graceful error
-#`  # handling in the event of failed data import.
-#`  raw_data <- NULL
-#`
-#`  # N.B. Assumes a header row is present.
-#`  raw_data <- readr::read_csv(
-#`    file = Gmisc::pathJoin(
-#`      funr::get_script_path(), "data", "raw_data",
-#`      "MiningProcess_Flotation_Plant_Database.csv"
-#`    ),
-#`    locale = readr::locale(decimal_mark = ","),
-#`    show_col_types = FALSE
-#`  )
-#`
-#`  return(raw_data)
-#`}
-
-###############################################################################
-###############################################################################
-
 csv_to_dataframe <- function(file_name) {
 
-  # Get data from a CSV and convert it to a dataframe.
+  # Get data from a CSV file and convert it to a dataframe.
 
-  # Get data.
-  df <- suppressMessages(
-    as.data.frame(readr::read_csv(
-      file = Gmisc::pathJoin(
-        here::here(), "data",
-        file_name
-      ),
-      show_col_types = FALSE
-    ))
-  )
+  # Build data paths with "here::here" for:
+  # a) multiplatform portability,
+  # b) starting directory flexibility.
+  file_path <- here::here("data", file_name)
 
-  df
+  # Attempt data import.
+  df <- tryCatch({
+    # Handle missing files.
+    if (!file.exists(file_path)) {
+      cat("Error. Missing file: ", file_path, ".", sep = "")
+      return(data.frame())
+    }
+
+    # Handle accessible, but empty files.
+    if (file.info(file_path)$size == 0) {
+      cat("Warning. Empty file: ", file_path, ".", sep = "")
+      return(data.frame())
+    }
+
+    # Get data.
+    suppressMessages(
+      as.data.frame(readr::read_csv(
+        file = file_path,
+        show_col_types = FALSE
+      ))
+    )
+
+  }, error = function(e) {
+    cat("Error. File: ", file_name, ". Message: ", e$message, sep = "")
+    return(data.frame())
+  })
+
 }
 
 ###############################################################################
@@ -51,34 +47,32 @@ load_daily_data <- function() {
 
   # Load the daily data.
 
-  # Import data.
-  train_x <- csv_to_dataframe("daily_train_X_data.csv")
-  train_y <- csv_to_dataframe("daily_train_y_data.csv")
-  test_x <- csv_to_dataframe("daily_test_X_data.csv")
-  test_y <- csv_to_dataframe("daily_test_y_data.csv")
-
-  # Convert date columns to row indices.
-  #
-  row.names(train_x) <- pull(train_x, colnames(train_x)[1])
-  row.names(train_y) <- pull(train_y, colnames(train_y)[1])
-  row.names(test_x) <- pull(test_x, colnames(test_x)[1])
-  row.names(test_y) <- pull(test_y, colnames(test_y)[1])
-  #
-  train_x <- select(train_x, -1)
-  train_y <- select(train_y, -1)
-  test_x <- select(test_x, -1)
-  test_y <- select(test_y, -1)
-
-  # Remove spaces from column names.
-  colnames(train_x) <- make.names(colnames(train_x), unique = TRUE)
-  colnames(train_y) <- make.names(colnames(train_y), unique = TRUE)
-  colnames(test_x) <- make.names(colnames(test_x), unique = TRUE)
-  colnames(test_y) <- make.names(colnames(test_y), unique = TRUE)
-
-  list(
-    "train_x" = train_x, "train_y" = train_y,
-    "test_x" = test_x, "test_y" = test_y
+  # Manage data imports via a list.
+  list_import <- list(
+    train_x = data.frame(),
+    train_y = data.frame(),
+    test_x = data.frame(),
+    test_y = data.frame()
   )
+
+  for (nm in names(list_import)) {
+
+    # Attempt data import.
+    list_import[[nm]] <- csv_to_dataframe(paste0("daily_", nm, "_data.csv"))
+
+    # Convert date columns to row indices.
+    row.names(list_import[[nm]]) <- dplyr::pull(
+      list_import[[nm]], colnames(list_import[[nm]])[1]
+    )
+    list_import[[nm]] <- dplyr::select(list_import[[nm]], -1)
+
+    # Remove spaces from column names.
+    colnames(list_import[[nm]]) <- make.names(
+      colnames(list_import[[nm]]), unique = TRUE
+    )
+  }
+
+  list_import
 }
 
 ###############################################################################

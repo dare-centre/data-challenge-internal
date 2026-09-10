@@ -13,15 +13,19 @@ import numpy as np
 
 def load_environode(data_dir, filestub, utc_to_aest=True):
     """
-    Load downloaded data from Environode
+    Load downloaded data from Environode.
     Input:
-        - data_dir: directory where data is stored
-        - filestub: filestub of data to load
-        - utc_to_aest: convert data in UTC to AEST
+        - data_dir: directory where data is stored.
+        - filestub: filestub of data to load.
+        - utc_to_aest: convert data in UTC to AEST.
     """
 
-    files = glob.glob(os.path.join(data_dir, "{}*.csv".format(filestub)))
+    # If the data directory can't be found, return an empty dataframe.
+    if not os.path.isdir(data_dir):
+        print(f"Warning. Missing directory: {data_dir}.")
+        return pd.DataFrame()
 
+    files = glob.glob(os.path.join(data_dir, "{}*.csv".format(filestub)))
     data_comb = []
     for this_file in files:
         print(this_file)
@@ -50,12 +54,12 @@ def convert_environode_daily(data_in, type="9am", buffer=8):
     """
     Convert data from Environode to daily - this makes clear the format
     of the Environode data (and rounding errors etc that the data has) and
-    works with the ol' 9am-9am rainfall data
+    works with the ol' 9am-9am rainfall data.
     Input:
-        - data_in: dict of dataframes of Environode data
-        - type: type of data to average - either 'daily' or '9am'
+        - data_in: dict of dataframes of Environode data.
+        - type: type of data to average - either 'daily' or '9am'.
         - buffer: number of minutes to subtract from each timestamp to ensure the
-        last observation at 9am remains in the correct day
+        last observation at 9am remains in the correct day.
     """
     # Load data.
     # Let's do a little work here - namely we would like daily means.
@@ -110,11 +114,11 @@ col_convert_df = {
 
 def load_llara_gauges(data_dir, gauge_names, col_convert=col_convert_df):
     """
-    Load data from the LLARA gauges
+    Load data from the LLARA gauges.
     Input:
-        - data_dir: directory where data is stored
-        - gauge_names: dict of gauge names and short names
-        - col_convert: dict of column names ingest/convert names
+        - data_dir: directory where data is stored.
+        - gauge_names: dict of gauge names and short names.
+        - col_convert: dict of column names ingest/convert names.
     """
     llara_data = []
     for short_name, this_gauge in gauge_names.items():
@@ -194,20 +198,21 @@ def load_silo_gauges(data_dir, gauge_names, col_convert=col_convert_silodf):
 
 def daily_averaging(daily_data, type="daily", buffer=8):
     """
-    Provide a daily average of the data
+    Provide a daily average of the data.
     Input:
-        - daily_data: dataframe of daily data
-        - type: type of data to average - either 'daily' or '9am'
+        - daily_data: dataframe of daily data.
+        - type: type of data to average - either 'daily' or '9am'.
         - buffer: number of minutes to subtract from each timestamp to ensure the
         last observation at 9am remains in the correct day (important for a
-        cumulative variable like rainfall)
+        cumulative variable like rainfall).
     """
     if "9am" in type:
         daily_data.index = daily_data.index.round(freq="1T", ambiguous="NaT")
-        # Rainfall resets at 9 AM local (9 AM even during DST) and is reported as the rainfall on the
-        # day of 9am finish so we need to shift by 24-9 hours to make the end time midnight
-        # and include a little buffer less than the sample time Environode tends to
-        # count e.g., 09:00:02 as inclusive in the previous day's rainfall.
+        # Rainfall resets at 9 AM local (9 AM even during DST) and is reported
+        # as the rainfall on the day of 9am finish so we need to shift by 24-9
+        # hours to make the end time midnight and include a little buffer less
+        # than the sample time Environode tends to count e.g., 09:00:02 as
+        # 3inclusive in the previous day's rainfall.
         daily_data.index = daily_data.index.shift(24 - 9, freq="H").shift(
             -buffer, freq="T"
         )
@@ -227,7 +232,7 @@ def daily_averaging(daily_data, type="daily", buffer=8):
 
 
 def cheeky_check(str_in):
-    if isinstance(str_in) is not str:
+    if not isinstance(str_in, str):
         return False
     if base64.b64encode(str_in.encode("utf-8")) == b"b3BlbnNlc2FtZQ==":
         return True
