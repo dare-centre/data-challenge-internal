@@ -1,5 +1,7 @@
 # DARE - Deluxe Data Challenge I
 
+![ai-assisted code](https://img.shields.io/badge/ai--assisted-code-white)
+
 This repository contains the data and example code for the DARE Deluxe Data
 Challenge I.
 
@@ -9,15 +11,16 @@ Challenge I.
 - [Getting Started](#getting-started)
 - [Glossary](#glossary)
 - [Acknowledgements](#acknowledgements)
+- [References](#references)
 
 ## Data
 
 Data were prepared using the Jupyter notebook `00_Data_Preprocessing.ipynb`. We
 will be using the files:
 
-`data/daily_train_X_data.csv`\
+`data/daily_train_x_data.csv`\
 `data/daily_train_y_data.csv`\
-`data/daily_test_X_data.csv`\
+`data/daily_test_x_data.csv`\
 `data/daily_test_y_data.csv`
 
 ## Getting Started
@@ -94,7 +97,15 @@ be linked to VS Code.
 
 ## Acknowledgements
 
+Gemini Gemini [[1](#references)] was used as an assistive tool for selected
+code debugging, linting, modernisation and robustness updates. All other
+repository code, logic and architecture were created by the authors, Joshua
+Simmons and Travis Stenborg.
+
 This work was supported by the Australian Research Council Training Centre in
 Data Analytics for Resources and Environments (project ICI9010031).
 
-Contributors: Joshua Simmons and Travis Stenborg.
+## References
+
+1. _Gemini Gemini_. (Large language model, September 2026 release). Google.
+   [Online]. Available: [google.com](https://www.google.com/).
