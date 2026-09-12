@@ -33,12 +33,12 @@ def load_daily_data():
             )
             dict_import[target_file] = pd.read_csv(target_filepath, index_col=0, parse_dates=True)
 
-        except FileNotFoundError as e:
+        except FileNotFoundError:
             # Handle missing files.
             dict_import[target_file] = pd.DataFrame()
             print(f"Error. Missing file: {target_filepath}.")
 
-        except pd.errors.EmptyDataError as e:
+        except pd.errors.EmptyDataError:
             # Handle accessible, but empty files.
             print(f"Warning. Empty file: {target_filepath}.")
 
