@@ -1,8 +1,8 @@
 import numpy as np
 import pandas as pd
-from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 from functions.plotting_functions import plot_model_fit
 from functions.preprocessing import cheeky_check
+from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 
 ###############################################################################
 ###############################################################################

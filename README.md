@@ -107,7 +107,7 @@ be linked to VS Code.
 
 ## Acknowledgements
 
-Gemini Gemini [[1](#references)] was used as an assistive tool for selected
+Google Gemini [[1](#references)] was used as an assistive tool for selected
 code debugging, linting, modernisation and robustness updates. All other
 repository code, logic and architecture were created by the authors, Joshua
 Simmons and Travis Stenborg.
@@ -117,5 +117,5 @@ Data Analytics for Resources and Environments (project ICI9010031).
 
 ## References
 
-1. _Gemini Gemini_. (Large language model, September 2026 release). Google.
+1. _Google Gemini_. (Large language model, September 2026 release). Google.
    [Online]. Available: [google.com](https://www.google.com/).

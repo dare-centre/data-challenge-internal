@@ -1,4 +1,5 @@
 import os
+
 import pandas as pd
 
 ###############################################################################
@@ -42,7 +43,12 @@ def load_daily_data():
             # Handle accessible, but empty files.
             print(f"Warning. Empty file: {target_filepath}.")
 
-    return dict_import["train_x"], dict_import["train_y"], dict_import["test_x"], dict_import["test_y"]
+    return (
+        dict_import["train_x"],
+        dict_import["train_y"],
+        dict_import["test_x"],
+        dict_import["test_y"]
+    )
 
 ###############################################################################
 ###############################################################################
