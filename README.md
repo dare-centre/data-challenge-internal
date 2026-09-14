@@ -108,7 +108,8 @@ be linked to VS Code.
 ## Acknowledgements
 
 Google Gemini [[1](#references)] was used as an assistive tool for selected
-code debugging, linting, modernisation and robustness updates. All other
+code debugging, linting, modernisation and robustness updates. Also, the Python
+project configuration file `pyproject.toml` was Gemini-generated. All other
 repository code, logic and architecture were created by the authors, Joshua
 Simmons and Travis Stenborg.
 
