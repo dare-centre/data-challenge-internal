@@ -8,7 +8,7 @@ Challenge I.
 ---
 
 <figure>
-<img src="assets/soil-moisture-gauges.jpeg" width="1768px">
+<img src="assets/soil-moisture-gauges.jpeg" alt="Aerial imaging of a rural area, with variable density vegetation, visible roads and two clusters of overlaid blue markers." width="1768px">
 </figure>
 
 ---
