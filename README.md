@@ -24,7 +24,7 @@ Challenge I.
 ## Data
 
 Data were prepared using the Jupyter notebook
-`pipeline_python\00_Data_Preprocessing.ipynb`. We will be using the files:
+`pipeline_python/00_Data_Preprocessing.ipynb`. We will be using the files:
 
 `data/daily_train_x_data.csv`\
 `data/daily_train_y_data.csv`\
@@ -37,9 +37,9 @@ Data were prepared using the Jupyter notebook
 
 The challenge should be attempted using either...
 
-- Python Jupyter notebook `pipeline_python\01_Data_Challenge.ipynb`
+- Python Jupyter notebook `pipeline_python/01_Data_Challenge.ipynb`
   or
-- R Markdown file `pipeline_R\01_Data_Challenge.Rmd`.
+- R Markdown file `pipeline_R/01_Data_Challenge.Rmd`.
 
 Those files have code for...
 

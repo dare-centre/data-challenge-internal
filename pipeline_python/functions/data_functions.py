@@ -23,7 +23,7 @@ def load_daily_data():
         "train_x": pd.DataFrame(),
         "train_y": pd.DataFrame(),
         "test_x": pd.DataFrame(),
-        "test_y": pd.DataFrame()
+        "test_y": pd.DataFrame(),
     }
 
     for target_file in dict_import:
@@ -32,7 +32,9 @@ def load_daily_data():
             target_filepath = os.path.join(
                 target_directory, "".join(["daily_", target_file, "_data.csv"])
             )
-            dict_import[target_file] = pd.read_csv(target_filepath, index_col=0, parse_dates=True)
+            dict_import[target_file] = pd.read_csv(
+                target_filepath, index_col=0, parse_dates=True
+            )
 
         except FileNotFoundError:
             # Handle missing files.
@@ -47,7 +49,7 @@ def load_daily_data():
         dict_import["train_x"],
         dict_import["train_y"],
         dict_import["test_x"],
-        dict_import["test_y"]
+        dict_import["test_y"],
     )
 
 ###############################################################################
