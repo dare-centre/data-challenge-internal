@@ -23,8 +23,8 @@ Challenge I.
 
 ## Data
 
-Data were prepared using the Jupyter notebook `00_Data_Preprocessing.ipynb`. We
-will be using the files:
+Data were prepared using the Jupyter notebook
+`pipeline_python\00_Data_Preprocessing.ipynb`. We will be using the files:
 
 `data/daily_train_x_data.csv`\
 `data/daily_train_y_data.csv`\
@@ -37,9 +37,9 @@ will be using the files:
 
 The challenge should be attempted using either...
 
-- Python Jupyter notebook `01_Data_Challenge.ipynb`
+- Python Jupyter notebook `pipeline_python\01_Data_Challenge.ipynb`
   or
-- R Markdown file `R_01_Data_Challenge.Rmd`.
+- R Markdown file `pipeline_R\01_Data_Challenge.Rmd`.
 
 Those files have code for...
 
@@ -108,8 +108,7 @@ be linked to VS Code.
 ## Acknowledgements
 
 Google Gemini [[1](#references)] was used as an assistive tool for selected
-code debugging, linting, modernisation and robustness updates. Also, the Python
-project configuration file `pyproject.toml` was Gemini-generated. All other
+code debugging, linting, modernisation and robustness updates. All other
 repository code, logic and architecture were created by the authors, Joshua
 Simmons and Travis Stenborg.
 

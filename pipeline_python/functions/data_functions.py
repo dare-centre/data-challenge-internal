@@ -10,8 +10,8 @@ def load_daily_data():
     """
     Load the daily data.
     """
-    # Accommodate data access from the root directory or a subdirectory.
-    target_directory = "data"
+    # Accommodate data access from a child directory or a grandchild directory.
+    target_directory = "../data"
     if not os.path.isdir(target_directory):
         # Accommodate "data" access from one level down the directory tree.
         current_directory = os.path.dirname(os.path.abspath(__file__))

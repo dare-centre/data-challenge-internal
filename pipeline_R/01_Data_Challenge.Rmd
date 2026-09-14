@@ -41,22 +41,22 @@ Everything we need to get started.
 #
 # Data.
 source(
-  here::here("functions_R", "R_data_functions.R"),
+  here::here("pipeline_R/functions_R", "R_data_functions.R"),
   local = knitr::knit_global()
 )
 # Helper.
 source(
-  here::here("functions_R", "R_helper_functions.R"),
+  here::here("pipeline_R/functions_R", "R_helper_functions.R"),
   local = knitr::knit_global()
 )
 # Plotting.
 source(
-  here::here("functions_R", "R_plotting_functions.R"),
+  here::here("pipeline_R/functions_R", "R_plotting_functions.R"),
   local = knitr::knit_global()
 )
 # Preprocessing.
 source(
-  here::here("functions_R", "R_preprocessing.R"),
+  here::here("pipeline_R/functions_R", "R_preprocessing.R"),
   local = knitr::knit_global()
 )
 ```
