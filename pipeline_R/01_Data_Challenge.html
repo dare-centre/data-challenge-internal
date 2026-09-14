@@ -1634,9 +1634,8 @@ Deluxe Data Challenge. The main steps covered here will be:</p>
 <li>Provide an example of a terribly performing baseline model</li>
 <li>Provide functions to quantify model predictive performance</li>
 </ul>
-<div id="imports-and-settings" class="section level3">
-<h3>Imports and settings</h3>
-<p>Everything we need to get started.</p>
+<div id="load-the-data" class="section level3">
+<h3>Load the data</h3>
 <pre class="r"><code># Build data paths with &quot;here::here&quot; for:
 # a) multiplatform portability,
 # b) starting directory flexibility.
@@ -1662,11 +1661,9 @@ source(
 source(
   here::here(&quot;pipeline_R/functions_R&quot;, &quot;R_preprocessing.R&quot;),
   local = knitr::knit_global()
-)</code></pre>
-</div>
-<div id="load-the-data" class="section level3">
-<h3>Load the data</h3>
-<pre class="r"><code>all_data &lt;- load_daily_data()
+)
+
+all_data &lt;- load_daily_data()
 #
 train_val_x &lt;- all_data$train_x
 train_val_y &lt;- all_data$train_y

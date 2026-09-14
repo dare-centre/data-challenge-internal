@@ -28,10 +28,9 @@ Challenge. The main steps covered here will be:
 - Provide an example of a terribly performing baseline model
 - Provide functions to quantify model predictive performance
 
-### Imports and settings
-Everything we need to get started.
+### Load the data
 
-```{r chunk_import}
+```{r chunk_load}
 
 # Build data paths with "here::here" for:
 # a) multiplatform portability,
@@ -59,11 +58,6 @@ source(
   here::here("pipeline_R/functions_R", "R_preprocessing.R"),
   local = knitr::knit_global()
 )
-```
-
-### Load the data
-
-```{r chunk_load}
 
 all_data <- load_daily_data()
 #
